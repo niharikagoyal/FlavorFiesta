@@ -1,0 +1,139 @@
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Body styles */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  /* Header styles */
+  header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header h1 {
+    font-size: 32px;
+    font-weight: 700;
+  }
+  
+  header nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  header nav a:hover {
+    background-color: #555;
+  }
+  
+  /* Main content styles */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 120px);
+  }
+  
+  .login-signup-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 400px;
+  }
+  
+  .login-container h2,
+  .signup-container h2 {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .login-container form,
+  .signup-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .login-container input,
+  .signup-container input {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .btn {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #ff4b4b;
+  }
+  
+  .login-container p,
+  .signup-container p {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .login-container .signup-link,
+  .signup-container .login-link {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  /* Footer styles */
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    header nav a {
+      margin: 10px 0;
+    }
+  
+    .container {
+      height: auto;
+      padding: 40px 20px;
+    }
+  
+    .login-signup-container {
+      width: 100%;
+    }
+  }

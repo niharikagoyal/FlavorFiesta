@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flavor Fiesta - My Cart</title>
+  <link rel="stylesheet" type="text/css" href="/css/cart.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Flavor Fiesta</h1>
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/menu">Menu</a>
+      <a href="/cart">Cart</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Your Cart</h2>
+
+    <div class="cart-items">
+      <% if (cartItems && cartItems.length > 0) { %>
+        <% cartItems.forEach(item => { %>
+          <div class="cart-item" data-product-id="<%= item.product._id %>" data-price="<%= item.product.price %>">
+            <div class="item-details">
+              <h3><%= item.product.name %></h3>
+              <p><%= item.product.description %></p>
+              <span class="price"><%= item.product.price %></span>
+            </div>
+            <div class="quantity-controls">
+              <button type="button" class="minus-btn">-</button>
+              <input type="number" name="quantity" value="<%= item.quantity %>" min="1" max="10" class="quantity-input">
+              <button type="button" class="plus-btn">+</button>
+            </div>
+            <button type="button" class="remove-btn">Remove</button>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p>Your cart is empty.</p>
+      <% } %>
+    </div>
+
+    <div class="cart-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-item">
+        <span>Subtotal:</span>
+        <span class="price subtotal">₹<%= subtotal.toFixed(2) %></span>
+      </div>
+      <div class="summary-item">
+        <span>Delivery:</span>
+        <span class="price delivery">₹50.00</span>
+      </div>
+      <div class="summary-item">
+        <span>Total:</span>
+        <span class="price total">₹<%= (subtotal + 50).toFixed(2) %></span>
+      </div>
+    </div>
+
+    <a href="/proceed" class="btn <%= cartItems && cartItems.length > 0 ? '' : 'disabled' %>">Proceed to Checkout</a>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Flavor Fiesta. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cartItems = document.querySelector('.cart-items');
+      const subtotalElement = document.querySelector('.subtotal');
+      const totalElement = document.querySelector('.total');
+      const checkoutButton = document.querySelector('.btn');
+      const deliveryCharge = 50;
+      function calculateSubtotal() {
+  let subtotal = 0;
+  document.querySelectorAll('.cart-item').forEach(item => {
+    const price = parseFloat(item.dataset.price) || 0; // Default to 0 if invalid
+    const quantity = parseInt(item.querySelector('.quantity-input').value) || 0; // Default to 0 if invalid
+    subtotal += price * quantity;
+  });
+  return subtotal;
+}
+      function updateSummary() {
+        const subtotal = calculateSubtotal();
+        const total = subtotal + deliveryCharge;
+        subtotalElement.textContent = `₹${subtotal.toFixed(2)}`;
+        totalElement.textContent = `₹${total.toFixed(2)}`;
+      }
+
+      function updateCart(productId, newQuantity) {
+        fetch('/cart/updatequantity', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId, quantity: newQuantity }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            updateSummary();
+          } else {
+            console.error('Failed to update cart');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+
+      function removeItem(productId) {
+        fetch(`/cart/removeitem/${productId}`, {
+          method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            const itemToRemove = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
+            itemToRemove.remove();
+            updateSummary();
+            if (document.querySelectorAll('.cart-item').length === 0) {
+              cartItems.innerHTML = '<p>Your cart is empty.</p>';
+              checkoutButton.classList.add('disabled');
+            }
+          } else {
+            console.error('Failed to remove item from cart');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+
+      cartItems.addEventListener('click', function(event) {
+        const cartItem = event.target.closest('.cart-item');
+        if (!cartItem) return;
+
+        const productId = cartItem.dataset.productId;
+        const quantityInput = cartItem.querySelector('.quantity-input');
+
+        if (event.target.classList.contains('minus-btn')) {
+          if (quantityInput.value > 1) {
+            quantityInput.value = parseInt(quantityInput.value) - 1;
+            updateCart(productId, quantityInput.value);
+          }
+        } else if (event.target.classList.contains('plus-btn')) {
+          if (quantityInput.value < 10) {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            updateCart(productId, quantityInput.value);
+          }
+        } else if (event.target.classList.contains('remove-btn')) {
+          if (confirm('Are you sure you want to remove this item from the cart?')) {
+            removeItem(productId);
+          }
+        }
+      });
+
+      cartItems.addEventListener('change', function(event) {
+        if (event.target.classList.contains('quantity-input')) {
+          const cartItem = event.target.closest('.cart-item');
+          const productId = cartItem.dataset.productId;
+          updateCart(productId, event.target.value);
+        }
+      });
+
+      // Initial calculation
+      updateSummary();
+    });
+  </script>
+</body>
+</html>

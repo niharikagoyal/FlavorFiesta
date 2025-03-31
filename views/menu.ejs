@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flavor Fiesta - Menu</title>
+  <link rel="stylesheet" type="text/css" href="/css/menu.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Flavor Fiesta</h1>
+    <nav>
+      <a href="/home">Home</a>
+      <a href="/menu">Menu</a>
+      <a href="/cart">Cart</a>
+    </nav>
+  </header>
+  
+  <main class="container">
+    <h2>Our Menu</h2>
+    <div id="menu-grid" class="menu-section">
+      <% q.forEach((prod) => { %>
+        <div class="menu-item">
+          <div class="menu-item-image">
+            <% if (prod.image) { %>
+              <img src="<%= prod.image %>" alt="<%= prod.name %>" />
+            <% } else { %>
+              <div class="placeholder-image">No image available</div>
+            <% } %>
+          </div>
+          <div class="menu-item-details">
+            <h4><%= prod.name %></h4>
+            <p><%= prod.description %></p>
+            <span class="price"><%= prod.price %></span>
+            <form action="/menu/addtocart" method="POST" class="add-to-cart-form">
+              <input type="hidden" name="productId" value="<%= prod._id %>">
+              <div class="quantity-control">
+                <button type="button" class="quantity-btn minus">-</button>
+                <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+                <button type="button" class="quantity-btn plus">+</button>
+              </div>
+              <button type="submit" class="btn-add-cart">Add to Cart</button>
+            </form>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Flavor Fiesta. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // JavaScript for quantity control and form submission
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuGrid = document.getElementById('menu-grid');
+
+      menuGrid.addEventListener('click', function(event) {
+        if (event.target.classList.contains('quantity-btn')) {
+          const input = event.target.parentNode.querySelector('.quantity-input');
+          if (event.target.classList.contains('minus')) {
+            if (input.value > 1) input.value = parseInt(input.value) - 1;
+          } else if (event.target.classList.contains('plus')) {
+            input.value = parseInt(input.value) + 1;
+          }
+        }
+      });
+
+      const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+      addToCartForms.forEach(form => {
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          
+          const formData = new FormData(form);
+          const productId = formData.get('productId');
+          const quantity = formData.get('quantity');
+          
+          try {
+            const response = await fetch('/menu/addtocart', {
+              method: 'POST',
+              body: JSON.stringify({ productId, quantity }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            if (response.ok) {
+              // You could show a success message here instead of reloading
+              alert('Item added to cart successfully!');
+              // Optionally reset the quantity to 1
+              form.querySelector('.quantity-input').value = 1;
+            } else {
+              console.error('Failed to add item to cart');
+            }
+          } catch (error) {
+            console.error('Error adding item to cart:', error);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
