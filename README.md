@@ -64,7 +64,7 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/yourusername/flavor-fiesta.git
    cd flavor-fiesta
-2.** Install backend dependencies**
+2.  ** Install backend dependencies**
 
 bash
 Copy
@@ -134,4 +134,7 @@ This project is licensed under the MIT License.
 
 👨‍💻 Developed By
 
-Connect with me on LinkedIn
+Niharika Goyal
+📧 niharika.goyal1212@gmail.com
+
+
