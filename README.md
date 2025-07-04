@@ -95,15 +95,17 @@ Ensure you have the following installed:
     node server.js
     Open the application
     Visit: http://localhost:3000
-
+    
 ## 💻 Usage Guide
-Action	Description
-Sign Up	Register a new user account
-Login	Log in using registered credentials
-Browse Menu	Explore available dishes
-Add to Cart	Choose quantity and add items to the cart
-View Cart	Review, update, or remove items
-Checkout	Proceed to place your order
+
+| **Action**     | **Description**                                   |
+|----------------|---------------------------------------------------|
+| **Sign Up**    | Register a new user account                       |
+| **Login**      | Log in using registered credentials               |
+| **Browse Menu**| Explore available dishes                          |
+| **Add to Cart**| Choose quantity and add items to the cart         |
+| **View Cart**  | Review, update, or remove items                   |
+| **Checkout**   | Proceed to place your order                       |
 
 ## 🧰 Technologies Used
 Backend: Node.js, Express.js
