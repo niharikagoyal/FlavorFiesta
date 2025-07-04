@@ -64,7 +64,7 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/yourusername/flavor-fiesta.git
    cd flavor-fiesta
-2.  ** Install backend dependencies**
+2. **Install the Backend Dependencies**
 
 bash
 Copy
