@@ -66,35 +66,35 @@ Ensure you have the following installed:
    cd flavor-fiesta
 2. **Install the Backend Dependencies**
 
-bash
-Copy
-Edit
-npm install
-Set up MongoDB
+   bash
+   Copy
+   Edit
+   npm install
+   Set up MongoDB
 
-3. **Ensure MongoDB is running on:**
-mongodb://127.0.0.1:27017/Login
+3. **Ensure MongoDB is running on**
+    mongodb://127.0.0.1:27017/Login
 
 4. **Or update the connection strings inside:**
 
-models/prod.js
+    models/prod.js
 
-models/users.js
+    models/users.js
 
 5.  **the server**
 
-bash
-Copy
-Edit
-npm start
-Or use:
+    bash
+    Copy
+    Edit
+    npm start
+    Or use:
 
-bash
-Copy
-Edit
-node server.js
-Open the application
-Visit: http://localhost:3000
+    bash
+    Copy
+    Edit
+    node server.js
+    Open the application
+    Visit: http://localhost:3000
 
 ## 💻 Usage Guide
 Action	Description
